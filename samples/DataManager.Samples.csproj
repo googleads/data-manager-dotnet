@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootNamespace>Google.Ads.DataManager.Samples</RootNamespace>
+    <AssemblyName>Google.Ads.DataManager.Samples</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <StartupObject>Google.Ads.DataManager.Samples.Program</StartupObject>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Google.Ads.DataManager.V1" Version="1.*-*" />
+    <PackageReference Include="Google.Protobuf" Version="3.31.1" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Google.Ads.DataManager.Util\src\Google.Ads.DataManager.Util.csproj" />
+  </ItemGroup>
+</Project>

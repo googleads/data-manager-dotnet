@@ -1,0 +1,16 @@
+<Project>
+  <Target Name="CSharpier" BeforeTargets="Build">
+    <Exec
+      Command="dotnet csharpier check ."
+      ContinueOnError="true"
+      StandardOutputImportance="low"
+      StandardErrorImportance="high"
+    >
+      <Output TaskParameter="ExitCode" PropertyName="CSharpierExitCode" />
+    </Exec>
+    <Error
+      Condition="'$(CSharpierExitCode)' != '0'"
+      Text="CSharpier found files that are not formatted. Please run 'dotnet csharpier format .' to format the code."
+    />
+  </Target>
+</Project>

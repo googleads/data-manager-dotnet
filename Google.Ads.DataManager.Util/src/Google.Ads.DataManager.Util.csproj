@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Google.Ads.DataManager.Util</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageId>Google.Ads.DataManager.Util</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Google</Authors>
+    <Description>A library to help with common tasks for the Google Ads Data Manager API.</Description>
+    <PackageTags>Google Ads Data Manager API</PackageTags>
+    <RepositoryUrl>https://github.com/googleads/data-manager-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>
