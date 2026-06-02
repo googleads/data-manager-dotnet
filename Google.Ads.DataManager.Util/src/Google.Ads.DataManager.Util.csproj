@@ -9,7 +9,7 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PackageId>Google.Ads.DataManager.Util</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Authors>Google</Authors>
     <Description>A library to help with common tasks for the Google Ads Data Manager API.</Description>
     <PackageTags>Google Ads Data Manager API</PackageTags>
