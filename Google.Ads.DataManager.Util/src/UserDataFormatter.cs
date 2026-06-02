@@ -122,6 +122,7 @@ namespace Google.Ads.DataManager.Util
 
             if (domain == "gmail.com" || domain == "googlemail.com")
             {
+                username = username.Split('+')[0];
                 username = PeriodPattern.Replace(username, "");
             }
 

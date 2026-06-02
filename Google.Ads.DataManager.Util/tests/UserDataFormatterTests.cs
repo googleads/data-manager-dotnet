@@ -32,6 +32,10 @@ namespace Google.Ads.DataManager.Util.Tests
                 _formatter.FormatEmailAddress("QuinnY@EXAMPLE.com"),
                 Is.EqualTo("quinny@example.com")
             );
+            Assert.That(
+                _formatter.FormatEmailAddress("user.name+NYC@Example.com"),
+                Is.EqualTo("user.name+nyc@example.com")
+            );
         }
 
         [Test]
@@ -60,6 +64,14 @@ namespace Google.Ads.DataManager.Util.Tests
             Assert.That(
                 _formatter.FormatEmailAddress("j.e.f..ferson.Loves.hiking@googlemail.com"),
                 Is.EqualTo("jeffersonloveshiking@googlemail.com")
+            );
+            Assert.That(
+                _formatter.FormatEmailAddress("Cloudy.SanFrancisco+shopping@gmail.com"),
+                Is.EqualTo("cloudysanfrancisco@gmail.com")
+            );
+            Assert.That(
+                _formatter.FormatEmailAddress("Cloudy.SanFrancisco+shopping@googlemail.com"),
+                Is.EqualTo("cloudysanfrancisco@googlemail.com")
             );
         }
 
