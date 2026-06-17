@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Text.Json;
 using CommandLine;
 using Google.Ads.DataManager.Util;
 using Google.Ads.DataManager.V1;
@@ -22,7 +23,7 @@ namespace Google.Ads.DataManager.Samples
     // <summary>
     // Sends a <see cref="IngestAudienceMembersRequest" /> without using encryption.
     //
-    // User data is read from a data file. See the <c>audience_members_1.csv</c> file in the
+    // User data is read from a data file. See the <c>audience_members_1.json</c> file in the
     // <c>sampledata</c> directory for an example.
     // </summary>
     public class IngestAudienceMembers
@@ -73,11 +74,11 @@ namespace Google.Ads.DataManager.Samples
             public string AudienceId { get; set; } = null!;
 
             [Option(
-                "csvFile",
+                "jsonFile",
                 Required = true,
-                HelpText = "Comma-separated file containing user data to ingest"
+                HelpText = "JSON file containing user data to ingest"
             )]
-            public string CsvFile { get; set; } = null!;
+            public string JsonFile { get; set; } = null!;
 
             [Option(
                 "validateOnly",
@@ -97,7 +98,7 @@ namespace Google.Ads.DataManager.Samples
                 options.LinkedAccountType,
                 options.LinkedAccountId,
                 options.AudienceId,
-                options.CsvFile,
+                options.JsonFile,
                 options.ValidateOnly
             );
         }
@@ -111,7 +112,7 @@ namespace Google.Ads.DataManager.Samples
             AccountType? linkedAccountType,
             string? linkedAccountId,
             string audienceId,
-            string csvFile,
+            string jsonFile,
             bool validateOnly
         )
         {
@@ -130,11 +131,8 @@ namespace Google.Ads.DataManager.Samples
                 );
             }
 
-            // Reads the audience members from the CSV file.
-            // Each row of the CSV file should be a single audience member.
-            // The first column of each row should be the email address.
-            // The second column of each row should be the phone number.
-            List<Member> memberList = ReadMemberDataFile(csvFile);
+            // Reads the audience members from the JSON file.
+            List<Member> memberList = ReadMemberData(jsonFile);
 
             // Creates a factory that will be used to generate the appropriate data manager.
             var userDataFormatter = new UserDataFormatter();
@@ -147,7 +145,7 @@ namespace Google.Ads.DataManager.Samples
                 var userDataBuilder = new UserData();
 
                 // Adds a UserIdentifier for each valid email address for the member.
-                foreach (var email in member.EmailAddresses)
+                foreach (var email in member.Emails)
                 {
                     try
                     {
@@ -257,6 +255,9 @@ namespace Google.Ads.DataManager.Samples
                     },
                 };
 
+                // Logs the request.
+                Console.WriteLine($"Request #{requestCount}:\n{request}");
+
                 // Sends the data to the Data Manager API.
                 IngestAudienceMembersResponse response =
                     ingestionServiceClient.IngestAudienceMembers(request);
@@ -267,66 +268,16 @@ namespace Google.Ads.DataManager.Samples
 
         private class Member
         {
-            public List<string> EmailAddresses { get; } = new List<string>();
-            public List<string> PhoneNumbers { get; } = new List<string>();
+            public List<string> Emails { get; set; } = new List<string>();
+            public List<string> PhoneNumbers { get; set; } = new List<string>();
         }
 
-        private List<Member> ReadMemberDataFile(string dataFile)
+        private List<Member> ReadMemberData(string jsonFile)
         {
-            var members = new List<Member>();
-            using (var reader = new StreamReader(dataFile))
-            {
-                string? line;
-                int lineNumber = 0;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    lineNumber++;
-                    if (line.StartsWith("#"))
-                        // Skips comment row.
-                        continue;
-
-                    // Expected format:
-                    // email_1,email_2,email_3,phone_1,phone_2,phone_3
-                    string[] columns = line.Split(',');
-                    if (columns[0] == "email_1")
-                        // Skips header row.
-                        continue;
-
-                    var member = new Member();
-                    for (int col = 0; col < columns.Length; col++)
-                    {
-                        if (string.IsNullOrWhiteSpace(columns[col]))
-                        {
-                            continue;
-                        }
-
-                        if (col < 3)
-                        {
-                            member.EmailAddresses.Add(columns[col]);
-                        }
-                        else if (col < 6)
-                        {
-                            member.PhoneNumbers.Add(columns[col]);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Ignoring column index {col} in line #{lineNumber}");
-                        }
-                    }
-
-                    if (!member.EmailAddresses.Any() && !member.PhoneNumbers.Any())
-                    {
-                        // Skips the row since it contains no user data.
-                        Console.WriteLine($"Ignoring line {lineNumber}. No data.");
-                    }
-                    else
-                    {
-                        // Adds the parsed user data to the list.
-                        members.Add(member);
-                    }
-                }
-            }
-            return members;
+            string jsonString = File.ReadAllText(jsonFile);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<List<Member>>(jsonString, options)
+                ?? new List<Member>();
         }
     }
 }
