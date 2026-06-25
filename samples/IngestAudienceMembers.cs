@@ -16,6 +16,7 @@ using System.Text.Json;
 using CommandLine;
 using Google.Ads.DataManager.Util;
 using Google.Ads.DataManager.V1;
+using Google.Protobuf.WellKnownTypes;
 using static Google.Ads.DataManager.V1.ProductAccount.Types;
 
 namespace Google.Ads.DataManager.Samples
@@ -142,6 +143,7 @@ namespace Google.Ads.DataManager.Samples
             // Processes each batch of audience members.
             foreach (var member in memberList)
             {
+                var compositeData = new CompositeData();
                 var userDataBuilder = new UserData();
 
                 // Adds a UserIdentifier for each valid email address for the member.
@@ -186,9 +188,75 @@ namespace Google.Ads.DataManager.Samples
                     }
                 }
 
-                if (userDataBuilder.UserIdentifiers.Any())
+                // Adds IP address information for each valid entry for the member.
+                var ipDatas = new List<IpData>();
+                foreach (var ipInfo in member.IpInfos)
                 {
-                    audienceMembers.Add(new AudienceMember { UserData = userDataBuilder });
+                    if (operatingAccountType != AccountType.GoogleAds)
+                    {
+                        Console.WriteLine(
+                            $"Skipping IP address information for operating account type {operatingAccountType}. "
+                                + "Sending IP address is only supported for operating account type GOOGLE_ADS."
+                        );
+                    }
+
+                    string processedIpAddress = (ipInfo.IpAddress ?? "").Trim();
+                    if (string.IsNullOrEmpty(processedIpAddress))
+                    {
+                        Console.WriteLine("Skipping IP address information with no IP address");
+                        continue;
+                    }
+
+                    var ipData = new IpData { IpAddress = processedIpAddress };
+
+                    string startTimeString = (ipInfo.ObserveStartTime ?? "").Trim();
+                    if (!string.IsNullOrEmpty(startTimeString))
+                    {
+                        try
+                        {
+                            ipData.ObserveStartTime = Timestamp.FromDateTime(
+                                DateTime.Parse(startTimeString).ToUniversalTime()
+                            );
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine(
+                                $"Ignoring observe start time '{startTimeString}' since it can't be parsed"
+                            );
+                        }
+                    }
+
+                    string endTimeString = (ipInfo.ObserveEndTime ?? "").Trim();
+                    if (!string.IsNullOrEmpty(endTimeString))
+                    {
+                        try
+                        {
+                            ipData.ObserveEndTime = Timestamp.FromDateTime(
+                                DateTime.Parse(endTimeString).ToUniversalTime()
+                            );
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine(
+                                $"Ignoring observe end time '{endTimeString}' since it can't be parsed"
+                            );
+                        }
+                    }
+
+                    ipDatas.Add(ipData);
+                }
+
+                if (userDataBuilder.UserIdentifiers.Any() || ipDatas.Any())
+                {
+                    if (userDataBuilder.UserIdentifiers.Any())
+                    {
+                        compositeData.UserData = userDataBuilder;
+                    }
+                    if (ipDatas.Any())
+                    {
+                        compositeData.IpData.AddRange(ipDatas);
+                    }
+                    audienceMembers.Add(new AudienceMember { CompositeData = compositeData });
                 }
             }
 
@@ -270,6 +338,14 @@ namespace Google.Ads.DataManager.Samples
         {
             public List<string> Emails { get; set; } = new List<string>();
             public List<string> PhoneNumbers { get; set; } = new List<string>();
+            public List<IpInfo> IpInfos { get; set; } = new List<IpInfo>();
+
+            public class IpInfo
+            {
+                public string? IpAddress { get; set; }
+                public string? ObserveStartTime { get; set; }
+                public string? ObserveEndTime { get; set; }
+            }
         }
 
         private List<Member> ReadMemberData(string jsonFile)
