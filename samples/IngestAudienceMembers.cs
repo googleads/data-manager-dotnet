@@ -198,6 +198,7 @@ namespace Google.Ads.DataManager.Samples
                             $"Skipping IP address information for operating account type {operatingAccountType}. "
                                 + "Sending IP address is only supported for operating account type GOOGLE_ADS."
                         );
+                        continue;
                     }
 
                     string processedIpAddress = (ipInfo.IpAddress ?? "").Trim();
