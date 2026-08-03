@@ -337,7 +337,7 @@ namespace Google.Ads.DataManager.Util
             {
                 throw new ArgumentNullException(nameof(s), "Null string");
             }
-            if (string.IsNullOrEmpty(s.Trim()))
+            if (string.IsNullOrWhiteSpace(s))
             {
                 throw new ArgumentException("Empty or blank string", nameof(s));
             }
