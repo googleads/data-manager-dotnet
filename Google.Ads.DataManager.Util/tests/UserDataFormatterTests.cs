@@ -184,6 +184,57 @@ namespace Google.Ads.DataManager.Util.Tests
         }
 
         [Test]
+        public void TestFormatAddressLine_ValidInputs()
+        {
+            Assert.That(
+                _formatter.FormatAddressLine(" 1800 Amphibious Blvd.  "),
+                Is.EqualTo("1800 amphibious blvd")
+            );
+        }
+
+        [Test]
+        public void TestFormatAddressLine_InvalidInput_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() => _formatter.FormatAddressLine(null!));
+            Assert.Throws<ArgumentException>(() => _formatter.FormatAddressLine(""));
+            Assert.Throws<ArgumentException>(() => _formatter.FormatAddressLine("   "));
+        }
+
+        [Test]
+        public void TestFormatCity_ValidInputs()
+        {
+            Assert.That(_formatter.FormatCity(" Mountain View  "), Is.EqualTo("mountain view"));
+            Assert.That(_formatter.FormatCity("Mountain View,"), Is.EqualTo("mountain view"));
+        }
+
+        [Test]
+        public void TestFormatCity_InvalidInput_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() => _formatter.FormatCity(null!));
+            Assert.Throws<ArgumentException>(() => _formatter.FormatCity(""));
+            Assert.Throws<ArgumentException>(() => _formatter.FormatCity("   "));
+        }
+
+        [Test]
+        public void TestFormatAdministrativeArea_ValidInputs()
+        {
+            Assert.That(_formatter.FormatAdministrativeArea(" CA  "), Is.EqualTo("ca"));
+            Assert.That(_formatter.FormatAdministrativeArea("CA."), Is.EqualTo("ca"));
+            Assert.That(
+                _formatter.FormatAdministrativeArea(" California  "),
+                Is.EqualTo("california")
+            );
+        }
+
+        [Test]
+        public void TestFormatAdministrativeArea_InvalidInput_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() => _formatter.FormatAdministrativeArea(null!));
+            Assert.Throws<ArgumentException>(() => _formatter.FormatAdministrativeArea(""));
+            Assert.Throws<ArgumentException>(() => _formatter.FormatAdministrativeArea("   "));
+        }
+
+        [Test]
         public void TestHashString_ValidInputs()
         {
             Func<string, string> hashAndEncode = s =>
@@ -198,6 +249,12 @@ namespace Google.Ads.DataManager.Util.Tests
                 hashAndEncode("+18005550100"),
                 Is.EqualTo(
                     "FB4F73A6EC5FDB7077D564CDD22C3554B43CE49168550C3B12C547B78C517B30"
+                ).IgnoreCase
+            );
+            Assert.That(
+                hashAndEncode("1800 amphibious blvd"),
+                Is.EqualTo(
+                    "FF75E73A0E768CC1FA28A64FAEBBCECCB562D7C05F2FFCDD8D100ABAD73E4579"
                 ).IgnoreCase
             );
         }
@@ -417,6 +474,45 @@ namespace Google.Ads.DataManager.Util.Tests
         {
             Assert.That(_formatter.ProcessPostalCode("1229-076"), Is.EqualTo("1229-076"));
             Assert.That(_formatter.ProcessPostalCode(" 1229-076  "), Is.EqualTo("1229-076"));
+        }
+
+        [Test]
+        public void TestProcessAddressLine_ValidInputs_HexEncoding()
+        {
+            const string encodedHash =
+                "ff75e73a0e768cc1fa28a64faebbceccb562d7c05f2ffcdd8d100abad73e4579";
+            Assert.That(
+                _formatter.ProcessAddressLine(
+                    " 1800 Amphibious Blvd.  ",
+                    UserDataFormatter.Encoding.Hex
+                ),
+                Is.EqualTo(encodedHash).IgnoreCase
+            );
+        }
+
+        [Test]
+        public void TestProcessAddressLine_ValidInputs_Base64Encoding()
+        {
+            const string encodedHash = "/3XnOg52jMH6KKZPrrvOzLVi18BfL/zdjRAKutc+RXk=";
+            Assert.That(
+                _formatter.ProcessAddressLine(
+                    " 1800 Amphibious Blvd.  ",
+                    UserDataFormatter.Encoding.Base64
+                ),
+                Is.EqualTo(encodedHash)
+            );
+        }
+
+        [Test]
+        public void TestProcessCity_ValidInputs()
+        {
+            Assert.That(_formatter.ProcessCity(" Mountain View  "), Is.EqualTo("mountain view"));
+        }
+
+        [Test]
+        public void TestProcessAdministrativeArea_ValidInputs()
+        {
+            Assert.That(_formatter.ProcessAdministrativeArea(" CA  "), Is.EqualTo("ca"));
         }
     }
 }

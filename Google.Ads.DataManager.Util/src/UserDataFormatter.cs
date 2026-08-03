@@ -57,6 +57,7 @@ namespace Google.Ads.DataManager.Util
             @"(?:,\s*|\s+)(?:jr\.|sr\.|2nd|3rd|ii|iii|iv|v|vi|cpa|dc|dds|vm|jd|md|phd)\s?$"
         );
         private static readonly Regex AllUppercaseCharsPattern = new Regex(@"^[A-Z]+$");
+        private static readonly Regex SymbolPattern = new Regex(@"[^\w\s]|_");
 
         public enum Encoding
         {
@@ -276,6 +277,55 @@ namespace Google.Ads.DataManager.Util
             return postalCode;
         }
 
+        private string FormatLocationString(string value, string paramName, string label)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(paramName, $"Null {label}");
+            }
+            value = value.Trim().ToLower(CultureInfo.InvariantCulture);
+            value = SymbolPattern.Replace(value, "");
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException($"Empty or blank {label}", paramName);
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the provided address line, normalized and formatted.
+        /// </summary>
+        /// <param name="addressLine">The address line to format.</param>
+        /// <exception cref="ArgumentException">If addressLine is invalid.</exception>
+        public string FormatAddressLine(string addressLine)
+        {
+            return FormatLocationString(addressLine, nameof(addressLine), "address line");
+        }
+
+        /// <summary>
+        /// Returns the provided city, normalized and formatted.
+        /// </summary>
+        /// <param name="city">The city to format.</param>
+        /// <exception cref="ArgumentException">If city is invalid.</exception>
+        public string FormatCity(string city)
+        {
+            return FormatLocationString(city, nameof(city), "city");
+        }
+
+        /// <summary>
+        /// Returns the provided administrative area, normalized and formatted.
+        /// </summary>
+        /// <param name="administrativeArea">The administrative area to format.</param>
+        /// <exception cref="ArgumentException">If administrativeArea is invalid.</exception>
+        public string FormatAdministrativeArea(string administrativeArea)
+        {
+            return FormatLocationString(
+                administrativeArea,
+                nameof(administrativeArea),
+                "administrative area"
+            );
+        }
+
         /// <summary>
         /// Returns the SHA-256 hash of the provided string.
         /// </summary>
@@ -376,6 +426,30 @@ namespace Google.Ads.DataManager.Util
         public string ProcessPostalCode(string postalCode)
         {
             return FormatPostalCode(postalCode);
+        }
+
+        /// <summary>
+        /// Formats the address line, hashes, and encodes using the specified encoding.
+        /// </summary>
+        public string ProcessAddressLine(string addressLine, Encoding encoding)
+        {
+            return HashAndEncode(FormatAddressLine(addressLine), encoding);
+        }
+
+        /// <summary>
+        /// Processes the city.
+        /// </summary>
+        public string ProcessCity(string city)
+        {
+            return FormatCity(city);
+        }
+
+        /// <summary>
+        /// Processes the administrative area.
+        /// </summary>
+        public string ProcessAdministrativeArea(string administrativeArea)
+        {
+            return FormatAdministrativeArea(administrativeArea);
         }
 
         private string HashAndEncode(string normalizedString, Encoding encoding)
