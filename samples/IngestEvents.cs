@@ -314,6 +314,14 @@ namespace Google.Ads.DataManager.Samples
                 // Sends the data to the Data Manager API.
                 IngestEventsResponse response = ingestionServiceClient.IngestEvents(request);
                 Console.WriteLine($"Response for request #{requestCount}:\n{response}");
+
+                if (response.FieldWarnings.Any())
+                {
+                    Console.WriteLine(
+                        "Request ingested successfully, but field warnings were returned. "
+                            + "Review warning details and update your implementation as needed."
+                    );
+                }
             }
             Console.WriteLine($"# of requests sent: {requestCount}");
         }
