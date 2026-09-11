@@ -59,12 +59,25 @@ namespace Google.Ads.DataManager.Util
         private static readonly Regex AllUppercaseCharsPattern = new Regex(@"^[A-Z]+$");
         private static readonly Regex SymbolPattern = new Regex(@"[^\w\s]|_");
 
+        /// <summary>
+        /// The encoding format to use for hashed data.
+        /// </summary>
         public enum Encoding
         {
+            /// <summary>
+            /// Hexadecimal (base 16) encoding.
+            /// </summary>
             Hex,
+
+            /// <summary>
+            /// Base64 encoding.
+            /// </summary>
             Base64,
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserDataFormatter"/> class.
+        /// </summary>
         public UserDataFormatter()
         {
             _sha256 = SHA256.Create();
@@ -383,6 +396,9 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Formats the email address, hashes, and encodes using the specified encoding.
         /// </summary>
+        /// <param name="email">The email address to process.</param>
+        /// <param name="encoding">The encoding format to use.</param>
+        /// <returns>The normalized, hashed, and encoded email address.</returns>
         public string ProcessEmailAddress(string email, Encoding encoding)
         {
             return HashAndEncode(FormatEmailAddress(email), encoding);
@@ -391,6 +407,9 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Formats the phone number, hashes, and encodes using the specified encoding.
         /// </summary>
+        /// <param name="phoneNumber">The phone number to process.</param>
+        /// <param name="encoding">The encoding format to use.</param>
+        /// <returns>The normalized, hashed, and encoded phone number.</returns>
         public string ProcessPhoneNumber(string phoneNumber, Encoding encoding)
         {
             return HashAndEncode(FormatPhoneNumber(phoneNumber), encoding);
@@ -399,6 +418,9 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Formats the given name, hashes, and encodes using the specified encoding.
         /// </summary>
+        /// <param name="givenName">The given name to process.</param>
+        /// <param name="encoding">The encoding format to use.</param>
+        /// <returns>The normalized, hashed, and encoded given name.</returns>
         public string ProcessGivenName(string givenName, Encoding encoding)
         {
             return HashAndEncode(FormatGivenName(givenName), encoding);
@@ -407,6 +429,9 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Formats the family name, hashes, and encodes using the specified encoding.
         /// </summary>
+        /// <param name="familyName">The family name to process.</param>
+        /// <param name="encoding">The encoding format to use.</param>
+        /// <returns>The normalized, hashed, and encoded family name.</returns>
         public string ProcessFamilyName(string familyName, Encoding encoding)
         {
             return HashAndEncode(FormatFamilyName(familyName), encoding);
@@ -415,6 +440,8 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Processes the region code.
         /// </summary>
+        /// <param name="regionCode">The region code to format.</param>
+        /// <returns>The normalized region code.</returns>
         public string ProcessRegionCode(string regionCode)
         {
             return FormatRegionCode(regionCode);
@@ -423,6 +450,8 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Processes the postal code.
         /// </summary>
+        /// <param name="postalCode">The postal code to format.</param>
+        /// <returns>The normalized postal code.</returns>
         public string ProcessPostalCode(string postalCode)
         {
             return FormatPostalCode(postalCode);
@@ -431,6 +460,9 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Formats the address line, hashes, and encodes using the specified encoding.
         /// </summary>
+        /// <param name="addressLine">The address line to process.</param>
+        /// <param name="encoding">The encoding format to use.</param>
+        /// <returns>The normalized, hashed, and encoded address line.</returns>
         public string ProcessAddressLine(string addressLine, Encoding encoding)
         {
             return HashAndEncode(FormatAddressLine(addressLine), encoding);
@@ -439,6 +471,8 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Processes the city.
         /// </summary>
+        /// <param name="city">The city to format.</param>
+        /// <returns>The normalized city.</returns>
         public string ProcessCity(string city)
         {
             return FormatCity(city);
@@ -447,6 +481,8 @@ namespace Google.Ads.DataManager.Util
         /// <summary>
         /// Processes the administrative area.
         /// </summary>
+        /// <param name="administrativeArea">The administrative area to format.</param>
+        /// <returns>The normalized administrative area.</returns>
         public string ProcessAdministrativeArea(string administrativeArea)
         {
             return FormatAdministrativeArea(administrativeArea);

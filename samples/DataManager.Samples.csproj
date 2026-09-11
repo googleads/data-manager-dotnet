@@ -4,11 +4,11 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootNamespace>Google.Ads.DataManager.Samples</RootNamespace>
     <AssemblyName>Google.Ads.DataManager.Samples</AssemblyName>
     <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
     <StartupObject>Google.Ads.DataManager.Samples.Program</StartupObject>
     <DebugType>portable</DebugType>
   </PropertyGroup>

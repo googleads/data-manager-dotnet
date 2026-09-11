@@ -5,6 +5,21 @@ Utility library and code samples for working with the
 
 ## Setup instructions
 
+### Install the package
+
+Install the `Google.Ads.DataManager.Util` library using the .NET CLI:
+
+```shell
+dotnet add package Google.Ads.DataManager.Util
+```
+
+Or using the Package Manager Console in Visual Studio:
+
+```shell
+Install-Package Google.Ads.DataManager.Util
+```
+
+For more details on setting up access, see:
 https://developers.google.com/data-manager/api/get-started/set-up-access#dotnet
 
 ## Repository structure
@@ -37,7 +52,7 @@ lowercase and with a hyphen (`-`) between each capitalized word. For example,
 the name of the sample for the `IngestEvents` class is `ingest-events`.
 
 ```shell
-dotnet run --project samples/DataManager.Samples/csroj \
+dotnet run --project samples/DataManager.Samples.csproj \
   ingest-events \
   --operatingAccountType <operating_account_type> \
   --operatingAccountId <operating_account_id> \
