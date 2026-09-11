@@ -9,7 +9,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- NuGet Package Metadata -->
     <PackageId>Google.Ads.DataManager.Util</PackageId>
-    <Version>0.3.0</Version>
+    <Version>0.4.0-rc1</Version>
     <Authors>Google LLC</Authors>
     <Company>Google LLC</Company>
     <Copyright>Copyright 2025 Google LLC</Copyright>
