@@ -1,19 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>Google.Ads.DataManager.Util</AssemblyName>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- NuGet Package Metadata -->
     <PackageId>Google.Ads.DataManager.Util</PackageId>
     <Version>0.3.0</Version>
-    <Authors>Google</Authors>
+    <Authors>Google LLC</Authors>
+    <Company>Google LLC</Company>
+    <Copyright>Copyright 2025 Google LLC</Copyright>
     <Description>A library to help with common tasks for the Google Ads Data Manager API.</Description>
-    <PackageTags>Google Ads Data Manager API</PackageTags>
+    <PackageTags>Google;Ads;DataManager;API</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/googleads/data-manager-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/googleads/data-manager-dotnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Documentation & Debugging -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
