@@ -1,0 +1,42 @@
+# Runs tests and formatting checks on pull requests targeted to main
+permissions:
+  contents: read
+name: Presubmit
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Code Format Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      with:
+        persist-credentials: false
+    - name: Set up .NET
+      uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
+      with:
+        dotnet-version: '8.0.x'
+    - name: Restore tools
+      run: dotnet tool restore
+    - name: Check formatting
+      run: dotnet csharpier check .
+
+  test:
+    name: Test (.NET 8.0)
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      with:
+        persist-credentials: false
+    - name: Set up .NET
+      uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
+      with:
+        dotnet-version: '8.0.x'
+    - name: Restore tools
+      run: dotnet tool restore
+    - name: Run tests
+      run: dotnet test
