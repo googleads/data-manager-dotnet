@@ -4,6 +4,7 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootNamespace>Google.Ads.DataManager.Samples</RootNamespace>
     <AssemblyName>Google.Ads.DataManager.Samples</AssemblyName>
