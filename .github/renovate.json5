@@ -23,4 +23,15 @@
         ],
         "minimumReleaseAge": null
     },
+    "packageRules": [
+        {
+            "description": "Stay on .NET 8.x LTS line while projects target net8.0",
+            "matchPackageNames": [
+                "dotnet-sdk",
+                "Microsoft.SourceLink.GitHub",
+                "System.Text.Json",
+            ],
+            "allowedVersions": "< 9.0.0",
+        },
+    ],
 }
