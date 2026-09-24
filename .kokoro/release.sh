@@ -19,6 +19,27 @@ echo "=== Building and Releasing from: ${REPO_DIR} (DRY_RUN=${DRY_RUN}) ==="
 # -----------------------------------------------------------------------------
 # 2. Environment & Tooling Setup
 # -----------------------------------------------------------------------------
+export DOTNET_CLI_TELEMETRY_OPTOUT=true
+export DOTNET_NOLOGO=true
+
+# Check if .NET is installed. If not, install .NET 8.0.414 SDK from the
+# official archive with strict SHA-512 verification.
+if ! command -v dotnet &> /dev/null; then
+  DOTNET_VERSION="8.0.414"
+  DOTNET_FILE="dotnet-sdk-${DOTNET_VERSION}-linux-x64.tar.gz"
+  DOTNET_SHA512="bdf6b151f787ac57d393e625e8b8fc8e19ac75902e76227da736f20e042cf7ff98bfd1a6669b77fdea7bfe678a0f23103e0cace1db83e9aee568ccd6f1b5b264"
+  DOTNET_DOWNLOAD_DIR="$(mktemp -d)"
+  echo "=== Downloading .NET SDK ${DOTNET_VERSION} ==="
+  curl -fsSL "https://builds.dotnet.microsoft.com/dotnet/Sdk/${DOTNET_VERSION}/${DOTNET_FILE}" -o "${DOTNET_DOWNLOAD_DIR}/${DOTNET_FILE}"
+  echo "=== Verifying SHA-512 of .NET SDK ${DOTNET_VERSION} ==="
+  echo "${DOTNET_SHA512}  ${DOTNET_DOWNLOAD_DIR}/${DOTNET_FILE}" | sha512sum --check --strict
+  echo "=== Installing .NET SDK ${DOTNET_VERSION} ==="
+  export DOTNET_ROOT="$(mktemp -d)"
+  tar -xzf "${DOTNET_DOWNLOAD_DIR}/${DOTNET_FILE}" -C "${DOTNET_ROOT}"
+  rm -rf "${DOTNET_DOWNLOAD_DIR}"
+  export PATH="${DOTNET_ROOT}:${PATH}"
+fi
+
 echo "=== Environment Info ==="
 dotnet --info
 
