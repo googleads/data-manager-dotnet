@@ -31,10 +31,12 @@ accept your pull requests.
    [Google Cloud Platform Samples Style Guide](https://github.com/GoogleCloudPlatform/Template/wiki/style.html)
    for the recommended coding standards for this organization.
 
-   Building the project project fails if your files have formatting issues.
-   Here's the command to run the formatter on your changes:
+   Building the project fails if your files have formatting issues.
+   Here are the commands to restore local tools and run the formatter on your
+   changes:
 
    ```shell
+   dotnet tool restore
    dotnet csharpier format .
    ```
 
