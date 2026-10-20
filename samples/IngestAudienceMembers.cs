@@ -16,6 +16,7 @@ using System.Text.Json;
 using CommandLine;
 using Google.Ads.DataManager.Util;
 using Google.Ads.DataManager.V1;
+using Google.Api.Gax.Grpc;
 using Google.Protobuf.WellKnownTypes;
 using static Google.Ads.DataManager.V1.ProductAccount.Types;
 
@@ -292,7 +293,18 @@ namespace Google.Ads.DataManager.Samples
                 };
             }
 
-            IngestionServiceClient ingestionServiceClient = IngestionServiceClient.Create();
+            // [START create_client]
+            // Creates a client for the ingestion service. Increases the maximum metadata size to
+            // 16MB to prevent RESOURCE_EXHAUSTED errors when responses contain large error
+            // details.
+            IngestionServiceClient ingestionServiceClient = new IngestionServiceClientBuilder
+            {
+                GrpcChannelOptions = GrpcChannelOptions.Empty.WithCustomOption(
+                    "grpc.max_metadata_size",
+                    16 * 1024 * 1024
+                ),
+            }.Build();
+            // [END create_client]
 
             int requestCount = 0;
 
