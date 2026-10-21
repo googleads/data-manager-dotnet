@@ -22,12 +22,12 @@ using static Google.Ads.DataManager.V1.ProductAccount.Types;
 
 namespace Google.Ads.DataManager.Samples
 {
-    // <summary>
-    // Sends an <see cref="IngestEventsRequest" /> without using encryption.
-    //
-    // Event data is read from a data file. See the <c>events_1.json</c> file in the
-    // <c>sampledata</c> directory for an example.
-    // </summary>
+    /// <summary>
+    /// Sends an <see cref="IngestEventsRequest" /> without using encryption.
+    ///
+    /// Event data is read from a data file. See the <c>events_1.json</c> file in the
+    /// <c>sampledata</c> directory for an example.
+    /// </summary>
     public class IngestEvents
     {
         private static readonly int MaxEventsPerRequest = 2_000;
