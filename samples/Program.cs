@@ -21,7 +21,12 @@ namespace Google.Ads.DataManager.Samples
         static void Main(string[] args)
         {
             Parser
-                .Default.ParseArguments<IngestAudienceMembers.Options, IngestEvents.Options>(args)
+                .Default.ParseArguments<
+                    CreateUserList.Options,
+                    IngestAudienceMembers.Options,
+                    IngestEvents.Options
+                >(args)
+                .WithParsed<CreateUserList.Options>(o => new CreateUserList().Run(o))
                 .WithParsed<IngestAudienceMembers.Options>(o => new IngestAudienceMembers().Run(o))
                 .WithParsed<IngestEvents.Options>(o => new IngestEvents().Run(o));
         }
