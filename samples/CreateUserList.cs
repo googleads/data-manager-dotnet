@@ -24,9 +24,9 @@ using static Google.Ads.DataManager.V1.ProductAccount.Types;
 
 namespace Google.Ads.DataManager.Samples
 {
-    // <summary>
-    // Sample of creating a <see cref="UserList" /> in an operating account.
-    // </summary>
+    /// <summary>
+    /// Sample of creating a <see cref="UserList" /> in an operating account.
+    /// </summary>
     public class CreateUserList
     {
         [Verb("create-user-list", HelpText = "Creates a UserList in an operating account.")]

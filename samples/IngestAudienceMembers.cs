@@ -22,12 +22,12 @@ using static Google.Ads.DataManager.V1.ProductAccount.Types;
 
 namespace Google.Ads.DataManager.Samples
 {
-    // <summary>
-    // Sends a <see cref="IngestAudienceMembersRequest" /> without using encryption.
-    //
-    // User data is read from a data file. See the <c>audience_members_1.json</c> file in the
-    // <c>sampledata</c> directory for an example.
-    // </summary>
+    /// <summary>
+    /// Sends a <see cref="IngestAudienceMembersRequest" /> without using encryption.
+    ///
+    /// User data is read from a data file. See the <c>audience_members_1.json</c> file in the
+    /// <c>sampledata</c> directory for an example.
+    /// </summary>
     public class IngestAudienceMembers
     {
         private static readonly int MaxMembersPerRequest = 10_000;
